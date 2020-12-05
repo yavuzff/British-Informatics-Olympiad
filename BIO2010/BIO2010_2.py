@@ -7,11 +7,9 @@ it will have the same heading and orientation on the same part of the board. If 
 exact same state, it will perform the exact same moves as there is no randomness and the die
 will ne stuck in an infinite loop.
 
-
-
 """
 
-def inputLines():
+def inputLines(): #inputting data needed for game
     line1 = input().strip().split()
     line2 = input().split()
     line3 = input().split()
@@ -24,17 +22,18 @@ def inputLines():
     return line1+line2+line3
 
 def formGrid():
+    #11 by 11 formed with all 1's
     grid = [1]*11
 
     for i in range(0,11):
         grid[i] = [1]*11
 
 
-    middle = inputLines()
+    middle = inputLines() #the middle of the grid is input 
 
     current = 0
     #print(middle)
-    for i in range (4,7):
+    for i in range (4,7): #the middle of the grid 4 to 7 is updated with the middle entered by user
         for j in range (4,7):
             grid[i][j] = middle[current]
             current += 1
@@ -45,18 +44,22 @@ def formGrid():
 
     return grid
 
-def outputGrid(location,grid):
-    x = location[0]
+def outputGrid(location,grid): #outputting grid
+    x = location[0] #the location of the dice is split to x and y values
     y = location[1]
-    for i in range(-1,2):
+    
+    for i in range(-1,2): #the left(-1), current (0)and right(+1) part of the x value will be shown
         row = ''
-        for j in range(-1,2):
-            if x+i <0 or y+j <0 or x+i>10 or y+j>10:
-                row += 'X'
+        for j in range(-1,2): #aboce, current and below of y values will be shown
+        #loops 9 times in total for each box in the 3by3 grid
+            
+            if x+i <0 or y+j <0 or x+i>10 or y+j>10: #checks if the end of the grid is reached
+                row += 'X' #adds an x if reached
                 
             else:
-                row += str(grid[x+i][y+j])
-        print(row.strip())
+                row += str(grid[x+i][y+j]) #if not end, the value at the grid is output
+                
+        print(row.strip()) #printed row by row
     
     
 def makeMove():
@@ -65,16 +68,14 @@ def makeMove():
     total = faceup + grid[location[0]][location[1]]
     #print (total)
     
-    if total > 6:
+    if total > 6: #bring it to lower than 6
         total -= 6
         
     
-    grid[location[0]][location[1]] = total
+    grid[location[0]][location[1]] = total #total and heading is received
     index = headings.index(heading)
     
-    if total == 2:
-        
-
+    if total == 2: #need to manually change the possibilities of headings, e.g. 90 degree clockwise, anticlockwise
         if index == 0:
             heading = headings[2]
         elif index == 1:
@@ -103,8 +104,9 @@ def makeMove():
         else:
             heading = headings[1]
         
-    diceCombination(heading)
-    #if total == 1 or total == 6:
+    diceCombination(heading) #then the current layout of the dice is updated 
+
+    
     location[0] += heading[0]
     location[1] += heading[1]
     location[0] = location[0]%11
@@ -116,6 +118,8 @@ def diceCombination(heading):
     #dice = [up,down,front,back,left,right]
     #dice = [1,6,5,2,3,4]
     orig = dice[:]
+
+    #manually changing dice combination
     
     if heading ==[-1,0]: #up
         dice[0] = orig[2]
@@ -148,7 +152,7 @@ def diceCombination(heading):
     #print( dice)
     #return dice
 
-while True:
+while True: #used for testing
     #dice = [up,down,front,back,left,right]
     dice = [1,6,5,2,3,4]
 
@@ -157,21 +161,21 @@ while True:
         
     grid = formGrid()
 
-    location = [5,5] #6,6
-    heading = [-1,0]#up
+    location = [5,5] #6,6 is the starting position
+    heading = [-1,0]#up is the first heading
     faceup = dice[0]
 
 
     moves = 1
-    while moves != 0:
+    while moves != 0: #loops until 0 is input
         moves = int(input())
         if moves != 0:
-            for i in range(0,moves):
+            for i in range(0,moves): #performs the moces
                 faceup = dice[0]
                 makeMove()
                 #print (faceup)
-                
-            outputGrid(location,grid)
+                 
+            outputGrid(location,grid)#outputs the grid
 
 
 
